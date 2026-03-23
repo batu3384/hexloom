@@ -1,8 +1,13 @@
 # Hexloom
 
-Hexloom is a professional FastAPI workspace for encoding, decoding, validating, and inspecting text transformations from a single interface.
+[![CI](https://github.com/batu3384/hexloom/actions/workflows/ci.yml/badge.svg)](https://github.com/batu3384/hexloom/actions/workflows/ci.yml)
+[![Live App](https://img.shields.io/badge/live-hexloom.onrender.com-1f6feb?style=flat-square)](https://hexloom.onrender.com)
+[![License: MIT](https://img.shields.io/badge/license-MIT-0f172a?style=flat-square)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.11%2B-2563eb?style=flat-square)](pyproject.toml)
 
-It combines a polished web UI, JSON API endpoints, batch processing, health diagnostics, and production-ready deployment scaffolding for teams that work with payloads, signals, and encoded content.
+Hexloom is a FastAPI-powered text transformation studio for encoding, decoding, validating, and inspecting structured text payloads through a single professional interface.
+
+It combines a polished browser workspace, JSON API endpoints, bulk-processing support, built-in diagnostics, and deployment-ready packaging for teams working with Base64, Morse, Binary, Hex, JSON wrappers, and related formats.
 
 ## Live links
 
@@ -12,15 +17,15 @@ It combines a polished web UI, JSON API endpoints, batch processing, health diag
 
 ![Hexloom overview](docs/assets/hexloom-overview.png)
 
-## Why Hexloom
+## Highlights
 
-- Unified transformation workspace for Base64, Morse, Binary, Hex, JSON payloads, URL encoding, and more
-- Single-record and batch processing flows from the same interface
-- FastAPI backend with automatic OpenAPI and Swagger docs
-- Built-in self-check endpoint to verify every supported transformation
-- Rich terminal logging and tqdm-backed batch progress
-- Static frontend assets with no Tailwind CDN dependency
-- Ready for GitHub, Docker, and Render deployment
+- Eleven supported transformation methods, including single and double Base64
+- Single-item and batch workflows from the same interface
+- FastAPI backend with OpenAPI and Swagger documentation
+- Built-in self-check endpoint for transformation reliability
+- Rich terminal request logging and tqdm-backed batch progress
+- Local static frontend assets with no Tailwind CDN dependency
+- Docker, Render, and GitHub-ready project structure
 
 ## Supported methods
 
@@ -36,25 +41,30 @@ It combines a polished web UI, JSON API endpoints, batch processing, health diag
 - `hex`
 - `binary`
 
-## Product walkthrough
+## Product surface
 
-### Main workspace
+### Workspace
 
-The main screen gives operators one place to choose a method, switch between `Text to Format` and `Format to Text`, run single or batch jobs, inspect the active workflow, and copy or reuse results.
+Hexloom gives operators a single workspace to:
+
+- select a transformation method
+- switch between `Text to Format` and `Format to Text`
+- run single or batch jobs
+- inspect the active workflow
+- reuse or copy output safely
 
 ![Hexloom workspace](docs/assets/hexloom-live-workspace.png)
 
 ### Diagnostics
 
-Hexloom includes a built-in system check at `GET /health/transformations`. It runs encode, decode, and batch simulation coverage across the supported methods and returns an application health report that can also be used as a deployment probe.
+Hexloom exposes `GET /health/transformations`, which runs encode, decode, and batch simulation checks across the supported methods. This makes the application easy to monitor and practical to use as a readiness probe in production.
 
-## API contract
+## API
 
-### Single transformation
+### Single transform
 
-`POST /encode`
-
-`POST /decode`
+- `POST /encode`
+- `POST /decode`
 
 Request:
 
@@ -86,11 +96,10 @@ Error response:
 }
 ```
 
-### Batch transformation
+### Batch transform
 
-`POST /bulk/encode`
-
-`POST /bulk/decode`
+- `POST /bulk/encode`
+- `POST /bulk/decode`
 
 Request:
 
@@ -101,26 +110,7 @@ Request:
 }
 ```
 
-## Tech stack
-
-- FastAPI
-- Pydantic
-- Jinja2 templates
-- Local CSS and JavaScript assets
-- Rich
-- tqdm
-- pytest
-- httpx
-
-## License
-
-This project is released under the MIT License. See `LICENSE`.
-
-## Releases
-
-Hexloom uses lightweight tagged releases. User-facing changes are summarized in `CHANGELOG.md`, and GitHub releases are published from version tags such as `v0.1.0`.
-
-## Local development
+## Quick start
 
 ```bash
 python3 -m venv .venv
@@ -157,23 +147,35 @@ docker run --rm -p 8000:8000 hexloom
 
 ### Render
 
-This repository includes `render.yaml`, so Render can bootstrap the service directly from GitHub.
+The repository includes [`render.yaml`](render.yaml), so Render can provision the web service directly from GitHub.
 
 ### Other platforms
 
-Use the included `Dockerfile` for Fly.io, Google Cloud Run, or any container-based VPS deployment.
+Use the included [`Dockerfile`](Dockerfile) for Fly.io, Google Cloud Run, or any container-based VPS deployment.
 
-## Testing
+## Quality checks
 
 ```bash
 .venv/bin/pytest -q
+python3 -m build
+python3 -m twine check dist/*
 ```
 
 Current local verification:
 
 - `18 passed`
 
-## Repository structure
+## Tech stack
+
+- FastAPI
+- Pydantic
+- Jinja2
+- Rich
+- tqdm
+- pytest
+- httpx
+
+## Repository layout
 
 ```text
 .
@@ -183,13 +185,17 @@ Current local verification:
 ├── static/
 ├── templates/
 ├── tests/
+├── CHANGELOG.md
 ├── Dockerfile
+├── LICENSE
 ├── pyproject.toml
 └── render.yaml
 ```
 
-## Notes
+## License
 
-- The frontend copy is intentionally in English for a cleaner product surface.
-- API and engine error messages remain explicit and machine-friendly.
-- The health endpoint is suitable for basic uptime and readiness checks.
+Hexloom is released under the [MIT License](LICENSE).
+
+## Releases
+
+User-facing changes are tracked in [CHANGELOG.md](CHANGELOG.md), and GitHub releases are published from tags such as [`v0.1.0`](https://github.com/batu3384/hexloom/releases/tag/v0.1.0).
