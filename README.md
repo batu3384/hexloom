@@ -112,6 +112,14 @@ Request:
 - pytest
 - httpx
 
+## License
+
+This project is released under the MIT License. See `LICENSE`.
+
+## Releases
+
+Hexloom uses lightweight tagged releases. User-facing changes are summarized in `CHANGELOG.md`, and GitHub releases are published from version tags such as `v0.1.0`.
+
 ## Local development
 
 ```bash
