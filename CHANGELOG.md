@@ -2,6 +2,18 @@
 
 All notable changes to Hexloom are documented in this file.
 
+## [0.1.1] - 2026-03-24
+
+### Fixed
+
+- Corrected `pyproject.toml` metadata so editable installs and GitHub Actions builds succeed
+- Added package README metadata for clean source and wheel validation
+- Limited CI execution to `main`, pull requests, and manual runs to avoid noisy tag-triggered workflows
+
+### Changed
+
+- Refined the README structure, badges, and deployment guidance for a more professional GitHub surface
+
 ## [0.1.0] - 2026-03-24
 
 ### Added
