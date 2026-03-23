@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cipherdeck-web-engine"
+version = "0.1.0"
+description = "CipherDeck FastAPI servisi"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1.0",
+  "jinja2>=3.1,<4.0",
+  "rich>=14.0,<15.0",
+  "tqdm>=4.66,<5.0",
+  "uvicorn[standard]>=0.34,<1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "httpx>=0.28,<1.0",
+  "pytest>=8.3,<9.0",
+  "pytest-asyncio>=0.26,<1.0",
+]
+
+[project.scripts]
+cipherdeck-web-engine = "app.main:run"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+include = ["app*"]

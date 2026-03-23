@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CipherDeck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <div class="page-glow page-glow-left"></div>
+    <div class="page-glow page-glow-right"></div>
+
+    <main class="layout">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Dönüşüm Konsolu</p>
+          <h1>CipherDeck</h1>
+          <p class="hero-text">
+            Tek panelde çalışın. Yönü seçin, yöntemi belirleyin, sonucu üretin.
+            Yerel stil katmanı sayesinde arayüz daha hızlı ve daha temiz açılır.
+          </p>
+        </div>
+
+        <div class="hero-stats">
+          <article class="stat-card">
+            <span class="stat-label">Yöntem</span>
+            <strong class="stat-value">{{ methods | length }}</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Akış</span>
+            <strong class="stat-value stat-value-warm">2</strong>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">API</span>
+            <div class="stat-inline">
+              <strong class="stat-value stat-value-light">Hazır</strong>
+              <a class="docs-link" href="/docs">Docs</a>
+            </div>
+          </article>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <div class="workspace-top">
+          <div class="section-heading">
+            <p class="eyebrow">Akış Kontrolü</p>
+            <h2>İş Akışı</h2>
+            <p class="section-text">
+              Yöntem araması, yön seçimi ve sonuç paneli tek yerde toplandı. Gereksiz tekrarlar kaldırıldı.
+            </p>
+          </div>
+
+          <div class="control-clusters">
+            <div class="pill-group pill-group-action">
+              <button id="selfCheckButton" type="button" class="ghost-button ghost-button-wide">Sistemi doğrula</button>
+            </div>
+            <div class="pill-group" id="directionGroup">
+              <button id="encodeFlowButton" type="button" class="pill-button is-active">Metin → Format</button>
+              <button id="decodeFlowButton" type="button" class="pill-button">Format → Metin</button>
+            </div>
+            <div class="pill-group" id="modeGroup">
+              <button id="singleModeButton" type="button" class="pill-button is-active is-neutral">Tekil</button>
+              <button id="bulkModeButton" type="button" class="pill-button is-neutral">Toplu</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="selector-grid">
+          <div class="field-card">
+            <label class="field-label" for="methodSearch">Yöntem ara</label>
+            <input
+              id="methodSearch"
+              class="field-control"
+              type="search"
+              placeholder="Örnek: base64, morse, payload"
+              autocomplete="off"
+            >
+          </div>
+
+          <div class="field-card">
+            <label class="field-label" for="methodSelect">Yöntem seç</label>
+            <select id="methodSelect" class="field-control">
+              {% for method in methods %}
+              <option value="{{ method.key }}">{{ method.label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="flow-card">
+            <span class="flow-card-label">Seçili akış</span>
+            <h3 id="flowHeadline"></h3>
+            <p id="flowDescription"></p>
+            <div class="badge-row">
+              <span id="methodKeyBadge" class="meta-badge"></span>
+              <span id="methodCategoryBadge" class="meta-badge meta-badge-muted"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-grid">
+          <article class="summary-card">
+            <span class="summary-label">Endpoint</span>
+            <strong id="endpointPreview" class="summary-value summary-value-accent"></strong>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label">Girdi tipi</span>
+            <strong id="inputTypePreview" class="summary-value"></strong>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label">Çıktı tipi</span>
+            <strong id="outputTypePreview" class="summary-value"></strong>
+          </article>
+        </div>
+
+        <div class="panel-grid">
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow eyebrow-cool">Girdi</p>
+                <h3 id="inputPanelTitle"></h3>
+              </div>
+              <button id="loadExampleButton" type="button" class="ghost-button">Örneği yükle</button>
+            </div>
+
+            <p id="inputPanelHint" class="panel-text"></p>
+
+            <div id="singleInputWrap" class="input-group">
+              <label id="singleInputLabel" class="field-label" for="singleInput"></label>
+              <textarea id="singleInput" class="text-panel" rows="12" spellcheck="false"></textarea>
+            </div>
+
+            <div id="bulkInputWrap" class="input-group is-hidden">
+              <label id="bulkInputLabel" class="field-label" for="bulkInput"></label>
+              <textarea id="bulkInput" class="text-panel" rows="12" spellcheck="false"></textarea>
+            </div>
+
+            <div class="action-row">
+              <button id="runButton" type="button" class="primary-button">Dönüştür</button>
+              <button id="clearButton" type="button" class="secondary-button">Temizle</button>
+              <button id="reuseButton" type="button" class="warm-button" disabled>Sonucu yeniden kullan</button>
+            </div>
+
+            <div id="statusMessage" class="status-box">
+              Yön seçildiğinde giriş tipi, örnek veri ve endpoint otomatik güncellenir.
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow eyebrow-warm">Çıktı</p>
+                <h3 id="outputPanelTitle"></h3>
+              </div>
+              <span id="resultBadge" class="result-badge">Hazır</span>
+            </div>
+
+            <p id="outputPanelHint" class="panel-text"></p>
+
+            <div class="output-box">
+              <pre id="resultOutput">Henüz sonuç yok.</pre>
+            </div>
+
+            <div class="action-row">
+              <button id="copyButton" type="button" class="secondary-button" disabled>Kopyala</button>
+              <span class="clipboard-hint">Panoya hazır</span>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="info-grid">
+        <article class="info-card">
+          <p class="eyebrow eyebrow-warm">Kullanım Notları</p>
+          <h2>Sade çalışma düzeni</h2>
+          <div class="stack-list">
+            <div class="stack-item">
+              <span class="stack-index">1</span>
+              <p>Metin → Format düz metni hedef biçime dönüştürür. Format → Metin ters işlemi yapar.</p>
+            </div>
+            <div class="stack-item">
+              <span class="stack-index">2</span>
+              <p>Yöntem seçiciyi ya da arama alanını kullanın. Seçim değişince örnek veri ve endpoint anında güncellenir.</p>
+            </div>
+            <div class="stack-item">
+              <span class="stack-index">3</span>
+              <p>Sonuç paneli kopyalanabilir çıktıyı gösterir. “Sonucu yeniden kullan” ile zincirleme dönüşüm yapabilirsiniz.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <p class="eyebrow">Seçili Yöntem</p>
+          <h2 id="detailTitle"></h2>
+          <p id="detailDescription" class="detail-text"></p>
+          <div class="detail-grid">
+            <div class="detail-mini">
+              <span class="summary-label">Kategori</span>
+              <strong id="detailCategory" class="summary-value"></strong>
+            </div>
+            <div class="detail-mini">
+              <span class="summary-label">Aktif örnek</span>
+              <strong id="detailExampleLabel" class="summary-value"></strong>
+            </div>
+          </div>
+          <div class="detail-box">
+            <span class="summary-label">Örnek veri</span>
+            <pre id="detailExampleValue"></pre>
+          </div>
+        </article>
+      </section>
+
+      <section class="health-card">
+        <div class="health-card-header">
+          <div>
+            <p class="eyebrow eyebrow-cool">Sistem Kontrolü</p>
+            <h2>Dönüşüm Sağlık Raporu</h2>
+          </div>
+          <span id="healthStatusBadge" class="result-badge">bekleniyor</span>
+        </div>
+
+        <div class="health-summary-grid">
+          <article class="summary-card">
+            <span class="summary-label">Kontrol edilen</span>
+            <strong id="healthCheckedCount" class="summary-value">0</strong>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label">Başarılı</span>
+            <strong id="healthSuccessCount" class="summary-value summary-value-accent">0</strong>
+          </article>
+          <article class="summary-card">
+            <span class="summary-label">Hatalı</span>
+            <strong id="healthErrorCount" class="summary-value">0</strong>
+          </article>
+        </div>
+
+        <div class="detail-box">
+          <span class="summary-label">Son sağlık özeti</span>
+          <pre id="healthOutput">Henüz self-check çalıştırılmadı.</pre>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script id="methods-data" type="application/json">{{ methods | tojson }}</script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
