@@ -198,4 +198,12 @@ Hexloom is released under the [MIT License](LICENSE).
 
 ## Releases
 
-User-facing changes are tracked in [CHANGELOG.md](CHANGELOG.md), and GitHub releases are published from tags such as [`v0.1.0`](https://github.com/batu3384/hexloom/releases/tag/v0.1.0).
+User-facing changes are tracked in [CHANGELOG.md](CHANGELOG.md), and GitHub releases are published from tags such as [`v0.1.2`](https://github.com/batu3384/hexloom/releases/tag/v0.1.2).
+
+## Contributing
+
+Contribution workflow and local expectations are documented in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Security
+
+Security reporting guidance and supported release expectations are documented in [SECURITY.md](SECURITY.md).

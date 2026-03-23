@@ -4,11 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hexloom"
-version = "0.1.0"
-description = "Hexloom FastAPI service"
+version = "0.1.2"
+description = "Professional FastAPI text transformation studio for structured payloads"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
+keywords = ["encoding", "decoding", "base64", "morse", "binary", "fastapi", "payloads"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
@@ -31,6 +32,13 @@ dev = [
   "pytest>=8.3,<9.0",
   "pytest-asyncio>=0.26,<1.0",
 ]
+
+[project.urls]
+Homepage = "https://hexloom.onrender.com"
+Documentation = "https://hexloom.onrender.com/docs"
+Repository = "https://github.com/batu3384/hexloom"
+Issues = "https://github.com/batu3384/hexloom/issues"
+Changelog = "https://github.com/batu3384/hexloom/blob/main/CHANGELOG.md"
 
 [project.scripts]
 hexloom = "app.main:run"

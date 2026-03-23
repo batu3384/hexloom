@@ -33,7 +33,7 @@ templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 app = FastAPI(
     title="Hexloom",
-    version="0.1.0",
+    version="0.1.2",
     description="Operational workspace for multi-format text transformations.",
 )
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")

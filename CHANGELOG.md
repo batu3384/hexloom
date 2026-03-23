@@ -2,6 +2,22 @@
 
 All notable changes to Hexloom are documented in this file.
 
+## [0.1.2] - 2026-03-24
+
+### Added
+
+- `CONTRIBUTING.md`, `SECURITY.md`, issue templates, and pull request template for a complete public GitHub surface
+
+### Fixed
+
+- Aligned project and app version metadata with the active release line
+- Opted GitHub Actions into the Node 24 runtime path to remove pending action-runtime drift
+
+### Changed
+
+- Expanded package metadata with keywords and project URLs
+- Tightened repository community health and contribution guidance
+
 ## [0.1.1] - 2026-03-24
 
 ### Fixed
