@@ -1,4 +1,4 @@
-"""FastAPI application entrypoint for CipherDeck."""
+"""FastAPI application entrypoint for Format Workbench."""
 
 from __future__ import annotations
 
@@ -31,9 +31,9 @@ engine = TransformationEngine()
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 app = FastAPI(
-    title="CipherDeck",
+    title="Format Workbench",
     version="0.1.0",
-    description="Çeşitli encode/decode yöntemlerini destekleyen FastAPI servisi.",
+    description="Operational workspace for multi-format text transformations.",
 )
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 

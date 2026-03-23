@@ -121,7 +121,7 @@ function getDirectionMeta(method) {
   if (currentDirection === "encode") {
     return {
       headline: `Metin → ${method.label}`,
-      description: method.encode_title,
+      description: method.description,
       inputLabel: method.encode_input_label,
       outputLabel: method.encode_output_label,
       placeholder: method.encode_placeholder,
@@ -129,13 +129,13 @@ function getDirectionMeta(method) {
       endpoint: currentMode === "single" ? "/encode" : "/bulk/encode",
       outputHint: `${method.label} formatında üretilecek sonuç burada görünür.`,
       detailLabel: "Metinden formata örnek",
-      buttonLabel: "Formata dönüştür",
+      buttonLabel: "Dönüştür",
     };
   }
 
   return {
     headline: `${method.label} → Metin`,
-    description: method.decode_title,
+    description: method.description,
     inputLabel: method.decode_input_label,
     outputLabel: method.decode_output_label,
     placeholder: method.decode_placeholder,
@@ -153,7 +153,7 @@ function resetResultState() {
   copyButton.disabled = true;
   reuseButton.disabled = true;
   resultOutput.textContent = "Henüz sonuç yok.";
-  setResultBadge("Hazır", "idle");
+  setResultBadge("Ready", "idle");
 }
 
 function updateWorkflow() {
@@ -163,7 +163,7 @@ function updateWorkflow() {
   const exampleValue = currentMode === "bulk" ? `${meta.example}\n${meta.example}` : meta.example;
 
   flowHeadline.textContent = meta.headline;
-  flowDescription.textContent = `${meta.description} Bu seçim şu anda ${modeLabel} modda çalışacak.`;
+  flowDescription.textContent = `${meta.description} Aktif çalışma modu: ${modeLabel}.`;
   methodKeyBadge.textContent = method.key;
   methodCategoryBadge.textContent = method.category;
   endpointPreview.textContent = `POST ${meta.endpoint}`;
@@ -190,7 +190,7 @@ function updateWorkflow() {
   detailExampleLabel.textContent = meta.detailLabel;
   detailExampleValue.textContent = meta.example;
   resetResultState();
-  setStatus(`${meta.headline} akışı hazır. İsterseniz örnek veri yükleyip hemen deneyin.`, "info");
+  setStatus(`${meta.headline} akışı hazır. Gerekirse örnek veri yükleyip işlemi başlatın.`, "info");
 }
 
 function loadExample() {
@@ -220,7 +220,7 @@ function reuseResult() {
   } else {
     bulkInput.value = reusableBuffer;
   }
-  setStatus("Sonuç tekrar giriş alanına taşındı.", "success");
+  setStatus("Sonuç kaynak alana geri taşındı.", "success");
 }
 
 function refreshMethodOptions(searchTerm) {
@@ -281,7 +281,7 @@ async function performTransform() {
     payload = { data: singleInput.value, method: method.key };
     if (!payload.data.trim()) {
       setStatus(`${meta.inputLabel} boş olamaz.`, "error");
-      setResultBadge("validation", "error");
+      setResultBadge("Uyarı", "error");
       return;
     }
   } else {
@@ -292,13 +292,13 @@ async function performTransform() {
 
     if (!items.length) {
       setStatus(`${meta.inputLabel} listesinde en az bir dolu satır olmalıdır.`, "error");
-      setResultBadge("validation", "error");
+      setResultBadge("Uyarı", "error");
       return;
     }
     payload = { items, method: method.key };
   }
 
-  setResultBadge("loading", "loading");
+  setResultBadge("Running", "loading");
   resultOutput.textContent = "İşleniyor...";
   copyButton.disabled = true;
   reuseButton.disabled = true;
@@ -316,7 +316,7 @@ async function performTransform() {
 
     if (!response.ok) {
       resultOutput.textContent = result.message || "Beklenmeyen bir hata oluştu.";
-      setResultBadge(result.status || "error", "error");
+      setResultBadge("Hata", "error");
       setStatus(result.message || "İşlem başarısız oldu.", "error");
       return;
     }
@@ -328,7 +328,7 @@ async function performTransform() {
       reusableBuffer = output;
       copyButton.disabled = !copyBuffer;
       reuseButton.disabled = !reusableBuffer;
-      setResultBadge(result.status, "success");
+      setResultBadge("Tamam", "success");
       setStatus(`${meta.headline} işlemi tamamlandı.`, "success");
       return;
     }
@@ -348,14 +348,14 @@ async function performTransform() {
     reusableBuffer = result.combined_result || "";
     copyButton.disabled = !result.clipboard_ready;
     reuseButton.disabled = !reusableBuffer;
-    setResultBadge(result.status, result.status === "error" ? "error" : "success");
+    setResultBadge(result.status === "partial_success" ? "Kısmi" : "Tamam", result.status === "error" ? "error" : "success");
     setStatus(
       `Toplu işlem tamamlandı: ${result.summary.success_count}/${result.summary.total} başarılı.`,
       result.status === "error" ? "error" : "success",
     );
   } catch {
     resultOutput.textContent = "Ağ veya istemci tarafı bir hata oluştu.";
-    setResultBadge("network", "error");
+    setResultBadge("Bağlantı", "error");
     setStatus("Sunucuya erişilemedi veya yanıt çözümlenemedi.", "error");
   }
 }
@@ -375,8 +375,8 @@ async function copyResult() {
 
 async function runSelfCheck() {
   selfCheckButton.disabled = true;
-  healthOutput.textContent = "Self-check çalışıyor...";
-  healthStatusBadge.textContent = "çalışıyor";
+  healthOutput.textContent = "Sistem kontrolü çalışıyor...";
+  healthStatusBadge.textContent = "Çalışıyor";
   applyBadgeTone(healthStatusBadge, "loading");
 
   try {
@@ -384,7 +384,7 @@ async function runSelfCheck() {
     const payload = await response.json();
     const tone = payload.status === "ok" ? "success" : "error";
 
-    healthStatusBadge.textContent = payload.status;
+    healthStatusBadge.textContent = payload.status === "ok" ? "Sağlıklı" : "Sorun";
     applyBadgeTone(healthStatusBadge, tone);
     healthCheckedCount.textContent = String(payload.checked_methods || 0);
     healthSuccessCount.textContent = String(payload.success_count || 0);
@@ -403,9 +403,9 @@ async function runSelfCheck() {
     ];
     healthOutput.textContent = lines.join("\n");
   } catch {
-    healthStatusBadge.textContent = "hata";
+    healthStatusBadge.textContent = "Hata";
     applyBadgeTone(healthStatusBadge, "error");
-    healthOutput.textContent = "Self-check endpoint'ine ulaşılamadı.";
+    healthOutput.textContent = "Sistem kontrolü endpoint'ine ulaşılamadı.";
   } finally {
     selfCheckButton.disabled = false;
   }
@@ -423,6 +423,13 @@ reuseButton.addEventListener("click", reuseResult);
 runButton.addEventListener("click", performTransform);
 copyButton.addEventListener("click", copyResult);
 selfCheckButton.addEventListener("click", runSelfCheck);
+
+document.addEventListener("keydown", (event) => {
+  if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+    event.preventDefault();
+    performTransform();
+  }
+});
 
 refreshMethodOptions("");
 setDirection("encode");

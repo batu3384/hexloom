@@ -1,1 +1,1 @@
-"""CipherDeck package."""
+"""Format Workbench package."""

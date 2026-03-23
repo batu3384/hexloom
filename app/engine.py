@@ -1,4 +1,4 @@
-"""Core transformation logic for CipherDeck."""
+"""Core transformation logic for Format Workbench."""
 
 from __future__ import annotations
 

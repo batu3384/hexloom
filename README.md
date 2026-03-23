@@ -1,6 +1,6 @@
-# CipherDeck
+# Format Workbench
 
-CipherDeck is a FastAPI web application for encoding and decoding text with multiple transformation methods.
+Format Workbench is a FastAPI web application for encoding, decoding, and validating text transformations from a single operational UI.
 
 ## Features
 
@@ -41,8 +41,8 @@ Open:
 ## Docker
 
 ```bash
-docker build -t cipherdeck .
-docker run --rm -p 8000:8000 cipherdeck
+docker build -t format-workbench .
+docker run --rm -p 8000:8000 format-workbench
 ```
 
 ## Repository notes

@@ -1,4 +1,4 @@
-"""Pydantic request/response models for CipherDeck."""
+"""Pydantic request/response models for Format Workbench."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class TransformRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    data: str = Field(..., examples=["CipherDeck"])
+    data: str = Field(..., examples=["Format Workbench"])
     method: str = Field(..., examples=["rot13"])
 
 
@@ -22,7 +22,7 @@ class TransformResponse(BaseModel):
 class BulkTransformRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    items: list[str] = Field(..., min_length=1, examples=[["CipherDeck", "Hello World"]])
+    items: list[str] = Field(..., min_length=1, examples=[["Format Workbench", "Hello World"]])
     method: str = Field(..., examples=["base64"])
 
 

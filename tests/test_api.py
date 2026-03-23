@@ -11,7 +11,7 @@ async def test_index_page_renders():
         response = await client.get("/")
 
     assert response.status_code == 200
-    assert "CipherDeck" in response.text
+    assert "Format Workbench" in response.text
     assert "Metin → Format" in response.text
     assert "Format → Metin" in response.text
     assert "/static/styles.css" in response.text
