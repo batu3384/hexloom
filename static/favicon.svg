@@ -1,0 +1,15 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hexloomGradient" x1="36" y1="36" x2="220" y2="220" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#52D9B4"/>
+      <stop offset="1" stop-color="#FFB66C"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="56" fill="#0B1016"/>
+  <path d="M128 28L205 72.5V161.5L128 206L51 161.5V72.5L128 28Z" stroke="url(#hexloomGradient)" stroke-width="12"/>
+  <path d="M84 74V182" stroke="#F1F5F9" stroke-width="16" stroke-linecap="round"/>
+  <path d="M172 74V182" stroke="#F1F5F9" stroke-width="16" stroke-linecap="round"/>
+  <path d="M84 128H172" stroke="url(#hexloomGradient)" stroke-width="18" stroke-linecap="round"/>
+  <path d="M84 96C100 112 112 120 128 128C144 136 156 144 172 160" stroke="#52D9B4" stroke-width="10" stroke-linecap="round"/>
+  <path d="M172 96C156 112 144 120 128 128C112 136 100 144 84 160" stroke="#FFB66C" stroke-width="10" stroke-linecap="round"/>
+</svg>

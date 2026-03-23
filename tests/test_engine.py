@@ -6,12 +6,12 @@ engine = TransformationEngine()
 
 def test_roundtrip_supported_methods():
     roundtrip_cases = [
-        ("base64", "Format Workbench"),
+        ("base64", "Hexloom"),
         ("base64_double", "çözüm"),
         ("bytearray", "print('merhaba')"),
         ("html_entities", "<script>alert('x')</script>"),
         ("math_expr", "Merhaba"),
-        ("rot13", "Format Workbench"),
+        ("rot13", "Hexloom"),
         ("url_encode", "https://example.com/a b?x=1&y=2"),
         ("json_payload", 'console.log("x")'),
         ("morse", "SOS 2026"),

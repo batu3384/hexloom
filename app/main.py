@@ -1,13 +1,14 @@
-"""FastAPI application entrypoint for Format Workbench."""
+"""FastAPI application entrypoint for Hexloom."""
 
 from __future__ import annotations
 
+import os
 import time
 from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI, Request, Response, status
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from rich.console import Console
@@ -31,7 +32,7 @@ engine = TransformationEngine()
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 app = FastAPI(
-    title="Format Workbench",
+    title="Hexloom",
     version="0.1.0",
     description="Operational workspace for multi-format text transformations.",
 )
@@ -90,12 +91,25 @@ async def rich_request_logger(request: Request, call_next):
 
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
+    public_url = os.getenv("HEXLOOM_PUBLIC_URL", "").strip()
+    if not public_url:
+        public_url = str(request.base_url).rstrip("/")
+
+    og_image_path = str(request.url_for("static", path="og-card.svg"))
+    if og_image_path.startswith("http://") or og_image_path.startswith("https://"):
+        og_image_url = og_image_path
+    else:
+        og_image_url = f"{public_url}{og_image_path}"
+
     return templates.TemplateResponse(
         request=request,
         name="index.html",
         context={
             "request": request,
             "methods": engine.available_methods(),
+            "asset_version": app.version,
+            "public_url": public_url,
+            "og_image_url": og_image_url,
         },
     )
 
@@ -114,7 +128,7 @@ async def transformation_health():
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return FileResponse(BASE_DIR / "static" / "favicon.svg", media_type="image/svg+xml")
 
 
 @app.post("/encode", response_model=TransformResponse, response_model_exclude_none=True)

@@ -1,0 +1,68 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="90" y1="48" x2="1080" y2="582" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101A23"/>
+      <stop offset="1" stop-color="#0A0F15"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(284 142) rotate(34.7) scale(329 217)">
+      <stop stop-color="#55DDB8" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#55DDB8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(949 500) rotate(-160.7) scale(321 207)">
+      <stop stop-color="#FFB66C" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#FFB66C" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" rx="36" fill="url(#bg)"/>
+  <rect width="1200" height="630" rx="36" fill="url(#glowA)"/>
+  <rect width="1200" height="630" rx="36" fill="url(#glowB)"/>
+  <g opacity="0.14">
+    <path d="M76 68H1124" stroke="#EEF3F7"/>
+    <path d="M76 122H1124" stroke="#EEF3F7"/>
+    <path d="M76 176H1124" stroke="#EEF3F7"/>
+    <path d="M76 230H1124" stroke="#EEF3F7"/>
+    <path d="M76 284H1124" stroke="#EEF3F7"/>
+    <path d="M76 338H1124" stroke="#EEF3F7"/>
+    <path d="M76 392H1124" stroke="#EEF3F7"/>
+    <path d="M76 446H1124" stroke="#EEF3F7"/>
+    <path d="M76 500H1124" stroke="#EEF3F7"/>
+    <path d="M76 554H1124" stroke="#EEF3F7"/>
+    <path d="M100 52V578" stroke="#EEF3F7"/>
+    <path d="M190 52V578" stroke="#EEF3F7"/>
+    <path d="M280 52V578" stroke="#EEF3F7"/>
+    <path d="M370 52V578" stroke="#EEF3F7"/>
+    <path d="M460 52V578" stroke="#EEF3F7"/>
+    <path d="M550 52V578" stroke="#EEF3F7"/>
+    <path d="M640 52V578" stroke="#EEF3F7"/>
+    <path d="M730 52V578" stroke="#EEF3F7"/>
+    <path d="M820 52V578" stroke="#EEF3F7"/>
+    <path d="M910 52V578" stroke="#EEF3F7"/>
+    <path d="M1000 52V578" stroke="#EEF3F7"/>
+    <path d="M1090 52V578" stroke="#EEF3F7"/>
+  </g>
+  <rect x="76" y="74" width="1048" height="482" rx="28" fill="#121B25" fill-opacity="0.84" stroke="rgba(255,255,255,0.08)"/>
+  <g>
+    <rect x="124" y="120" width="118" height="118" rx="28" fill="#0F151D" stroke="#223445"/>
+    <path d="M153 151L183 180.5L153 210" stroke="#55DDB8" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M213 151L183 180.5L213 210" stroke="#FFB66C" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M165 234H201" stroke="#EEF3F7" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <text x="280" y="166" fill="#EEF3F7" font-family="Manrope, Arial, sans-serif" font-size="82" font-weight="800" letter-spacing="-2">Hexloom</text>
+  <text x="282" y="218" fill="#55DDB8" font-family="'IBM Plex Mono', monospace" font-size="24" letter-spacing="4">TEXT TRANSFORMATION STUDIO</text>
+  <text x="282" y="286" fill="#C8D3DC" font-family="Manrope, Arial, sans-serif" font-size="30" font-weight="500">
+    Encode, decode, inspect, and validate payloads
+  </text>
+  <text x="282" y="326" fill="#C8D3DC" font-family="Manrope, Arial, sans-serif" font-size="30" font-weight="500">
+    across Base64, Morse, Binary, Hex, JSON, and more.
+  </text>
+  <g>
+    <rect x="282" y="382" width="278" height="66" rx="20" fill="#13222A" stroke="#28475A"/>
+    <text x="316" y="422" fill="#EEF3F7" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="2">11 METHODS READY</text>
+    <rect x="580" y="382" width="318" height="66" rx="20" fill="#1A211B" stroke="#43624F"/>
+    <text x="614" y="422" fill="#EEF3F7" font-family="'IBM Plex Mono', monospace" font-size="22" letter-spacing="2">SELF CHECK INCLUDED</text>
+  </g>
+  <g opacity="0.9">
+    <rect x="914" y="394" width="154" height="34" rx="17" fill="#17342C" stroke="#2B6A58"/>
+    <text x="944" y="417" fill="#B6F6E2" font-family="'IBM Plex Mono', monospace" font-size="16" letter-spacing="2">LIVE API</text>
+  </g>
+</svg>

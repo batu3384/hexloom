@@ -1,1 +1,1 @@
-"""Format Workbench package."""
+"""Hexloom package."""

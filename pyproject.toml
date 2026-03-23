@@ -3,9 +3,9 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "format-workbench"
+name = "hexloom"
 version = "0.1.0"
-description = "Format Workbench FastAPI service"
+description = "Hexloom FastAPI service"
 requires-python = ">=3.11"
 dependencies = [
   "fastapi>=0.115,<1.0",
@@ -23,7 +23,7 @@ dev = [
 ]
 
 [project.scripts]
-format-workbench = "app.main:run"
+hexloom = "app.main:run"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

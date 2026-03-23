@@ -79,24 +79,24 @@ function setResultBadge(label, tone = "idle") {
 
 function applyBadgeTone(element, tone) {
   if (tone === "loading") {
-    element.style.color = "var(--ember)";
-    element.style.borderColor = "rgba(255, 139, 61, 0.28)";
-    element.style.background = "rgba(255, 139, 61, 0.1)";
+    element.style.color = "var(--warning)";
+    element.style.borderColor = "rgba(255, 184, 107, 0.3)";
+    element.style.background = "rgba(255, 184, 107, 0.12)";
     return;
   }
   if (tone === "success") {
-    element.style.color = "var(--mint)";
-    element.style.borderColor = "rgba(117, 242, 208, 0.28)";
-    element.style.background = "rgba(117, 242, 208, 0.1)";
+    element.style.color = "var(--accent)";
+    element.style.borderColor = "rgba(76, 214, 176, 0.28)";
+    element.style.background = "rgba(76, 214, 176, 0.12)";
     return;
   }
   if (tone === "error") {
     element.style.color = "var(--danger)";
-    element.style.borderColor = "rgba(255, 141, 141, 0.3)";
-    element.style.background = "rgba(255, 141, 141, 0.1)";
+    element.style.borderColor = "rgba(255, 140, 140, 0.3)";
+    element.style.background = "rgba(255, 140, 140, 0.12)";
     return;
   }
-  element.style.color = "var(--steel)";
+  element.style.color = "var(--text-muted)";
   element.style.borderColor = "var(--line)";
   element.style.background = "transparent";
 }
@@ -120,30 +120,30 @@ function setMode(mode) {
 function getDirectionMeta(method) {
   if (currentDirection === "encode") {
     return {
-      headline: `Metin → ${method.label}`,
+      headline: `Text → ${method.label}`,
       description: method.description,
       inputLabel: method.encode_input_label,
       outputLabel: method.encode_output_label,
       placeholder: method.encode_placeholder,
       example: method.encode_example,
       endpoint: currentMode === "single" ? "/encode" : "/bulk/encode",
-      outputHint: `${method.label} formatında üretilecek sonuç burada görünür.`,
-      detailLabel: "Metinden formata örnek",
-      buttonLabel: "Dönüştür",
+      outputHint: `${method.label} output appears in this panel.`,
+      detailLabel: "Text to format sample",
+      buttonLabel: "Run Transform",
     };
   }
 
   return {
-    headline: `${method.label} → Metin`,
+    headline: `${method.label} → Text`,
     description: method.description,
     inputLabel: method.decode_input_label,
     outputLabel: method.decode_output_label,
     placeholder: method.decode_placeholder,
     example: method.decode_example,
     endpoint: currentMode === "single" ? "/decode" : "/bulk/decode",
-    outputHint: "Çözülmüş metin burada görünür.",
-    detailLabel: "Formattan metne örnek",
-    buttonLabel: "Metne çöz",
+    outputHint: "Decoded plain text appears in this panel.",
+    detailLabel: "Format to text sample",
+    buttonLabel: "Decode to Text",
   };
 }
 
@@ -152,18 +152,18 @@ function resetResultState() {
   reusableBuffer = "";
   copyButton.disabled = true;
   reuseButton.disabled = true;
-  resultOutput.textContent = "Henüz sonuç yok.";
+  resultOutput.textContent = "No result yet.";
   setResultBadge("Ready", "idle");
 }
 
 function updateWorkflow() {
   const method = currentMethod();
   const meta = getDirectionMeta(method);
-  const modeLabel = currentMode === "single" ? "tekil" : "toplu";
+  const modeLabel = currentMode === "single" ? "single" : "batch";
   const exampleValue = currentMode === "bulk" ? `${meta.example}\n${meta.example}` : meta.example;
 
   flowHeadline.textContent = meta.headline;
-  flowDescription.textContent = `${meta.description} Aktif çalışma modu: ${modeLabel}.`;
+  flowDescription.textContent = `${meta.description} Active mode: ${modeLabel}.`;
   methodKeyBadge.textContent = method.key;
   methodCategoryBadge.textContent = method.category;
   endpointPreview.textContent = `POST ${meta.endpoint}`;
@@ -173,14 +173,14 @@ function updateWorkflow() {
   outputPanelTitle.textContent = meta.outputLabel;
   inputPanelHint.textContent =
     currentMode === "single"
-      ? `${meta.inputLabel} alanına tek bir kayıt girin.`
-      : `${meta.inputLabel} alanına her satıra bir kayıt gelecek şekilde girin.`;
+      ? `Enter a single record in the ${meta.inputLabel.toLowerCase()} field.`
+      : `Enter one record per line in the ${meta.inputLabel.toLowerCase()} field.`;
   outputPanelHint.textContent =
     currentMode === "single"
       ? meta.outputHint
-      : "Toplu modda özet ve satır bazlı sonuçlar sağ panelde gösterilir.";
+      : "Batch mode returns a summary plus line-by-line output in the result panel.";
   singleInputLabel.textContent = meta.inputLabel;
-  bulkInputLabel.textContent = `${meta.inputLabel} listesi`;
+  bulkInputLabel.textContent = `${meta.inputLabel} list`;
   singleInput.placeholder = meta.placeholder;
   bulkInput.placeholder = exampleValue;
   runButton.textContent = meta.buttonLabel;
@@ -190,7 +190,7 @@ function updateWorkflow() {
   detailExampleLabel.textContent = meta.detailLabel;
   detailExampleValue.textContent = meta.example;
   resetResultState();
-  setStatus(`${meta.headline} akışı hazır. Gerekirse örnek veri yükleyip işlemi başlatın.`, "info");
+  setStatus(`${meta.headline} is ready. Load a sample or start working with your own input.`, "info");
 }
 
 function loadExample() {
@@ -200,19 +200,19 @@ function loadExample() {
   } else {
     bulkInput.value = `${meta.example}\n${meta.example}`;
   }
-  setStatus("Seçili yön ve yönteme uygun örnek veri alana yerleştirildi.", "success");
+  setStatus("A sample payload for the current method has been loaded.", "success");
 }
 
 function clearWorkspace() {
   singleInput.value = "";
   bulkInput.value = "";
   resetResultState();
-  setStatus("Girdi ve sonuç alanları temizlendi.", "info");
+  setStatus("Source and result areas were cleared.", "info");
 }
 
 function reuseResult() {
   if (!reusableBuffer) {
-    setStatus("Yeniden kullanılabilir bir sonuç yok.", "error");
+    setStatus("There is no reusable result yet.", "error");
     return;
   }
   if (currentMode === "single") {
@@ -220,7 +220,7 @@ function reuseResult() {
   } else {
     bulkInput.value = reusableBuffer;
   }
-  setStatus("Sonuç kaynak alana geri taşındı.", "success");
+  setStatus("The latest output was copied back into the input area.", "success");
 }
 
 function refreshMethodOptions(searchTerm) {
@@ -250,10 +250,10 @@ function refreshMethodOptions(searchTerm) {
   if (!filteredMethods.length) {
     const option = document.createElement("option");
     option.value = "";
-    option.textContent = "Eşleşen yöntem bulunamadı";
+    option.textContent = "No matching method";
     methodSelect.append(option);
     methodSelect.disabled = true;
-    setStatus("Arama sonucu eşleşen yöntem bulunamadı.", "error");
+    setStatus("No method matched the current search term.", "error");
     resetResultState();
     return;
   }
@@ -269,7 +269,7 @@ function refreshMethodOptions(searchTerm) {
 async function performTransform() {
   const method = currentMethod();
   if (!method) {
-    setStatus("Önce geçerli bir yöntem seçin.", "error");
+    setStatus("Select a valid method before running a transformation.", "error");
     return;
   }
 
@@ -280,8 +280,8 @@ async function performTransform() {
   if (currentMode === "single") {
     payload = { data: singleInput.value, method: method.key };
     if (!payload.data.trim()) {
-      setStatus(`${meta.inputLabel} boş olamaz.`, "error");
-      setResultBadge("Uyarı", "error");
+      setStatus(`${meta.inputLabel} cannot be empty.`, "error");
+      setResultBadge("Invalid", "error");
       return;
     }
   } else {
@@ -291,20 +291,20 @@ async function performTransform() {
       .filter((line) => line.length > 0);
 
     if (!items.length) {
-      setStatus(`${meta.inputLabel} listesinde en az bir dolu satır olmalıdır.`, "error");
-      setResultBadge("Uyarı", "error");
+      setStatus(`Batch input requires at least one non-empty line.`, "error");
+      setResultBadge("Invalid", "error");
       return;
     }
     payload = { items, method: method.key };
   }
 
   setResultBadge("Running", "loading");
-  resultOutput.textContent = "İşleniyor...";
+  resultOutput.textContent = "Processing...";
   copyButton.disabled = true;
   reuseButton.disabled = true;
   copyBuffer = "";
   reusableBuffer = "";
-  setStatus(`${meta.headline} isteği gönderildi.`, "info");
+  setStatus(`${meta.headline} request has been sent.`, "info");
 
   try {
     const response = await fetch(endpoint, {
@@ -315,9 +315,9 @@ async function performTransform() {
     const result = await response.json();
 
     if (!response.ok) {
-      resultOutput.textContent = result.message || "Beklenmeyen bir hata oluştu.";
-      setResultBadge("Hata", "error");
-      setStatus(result.message || "İşlem başarısız oldu.", "error");
+      resultOutput.textContent = result.message || "An unexpected server error occurred.";
+      setResultBadge("Error", "error");
+      setStatus(result.message || "The transformation failed.", "error");
       return;
     }
 
@@ -328,15 +328,15 @@ async function performTransform() {
       reusableBuffer = output;
       copyButton.disabled = !copyBuffer;
       reuseButton.disabled = !reusableBuffer;
-      setResultBadge("Tamam", "success");
-      setStatus(`${meta.headline} işlemi tamamlandı.`, "success");
+      setResultBadge("Done", "success");
+      setStatus(`${meta.headline} completed successfully.`, "success");
       return;
     }
 
     const lines = [
-      `${meta.headline} | toplam ${result.summary.total}`,
-      `Başarılı: ${result.summary.success_count}`,
-      `Hatalı: ${result.summary.error_count}`,
+      `${meta.headline} | total ${result.summary.total}`,
+      `Succeeded: ${result.summary.success_count}`,
+      `Failed: ${result.summary.error_count}`,
       "",
       ...result.results.map((item) => {
         const content = item.status === "success" ? item.result : item.message;
@@ -348,35 +348,35 @@ async function performTransform() {
     reusableBuffer = result.combined_result || "";
     copyButton.disabled = !result.clipboard_ready;
     reuseButton.disabled = !reusableBuffer;
-    setResultBadge(result.status === "partial_success" ? "Kısmi" : "Tamam", result.status === "error" ? "error" : "success");
+    setResultBadge(result.status === "partial_success" ? "Partial" : "Done", result.status === "error" ? "error" : "success");
     setStatus(
-      `Toplu işlem tamamlandı: ${result.summary.success_count}/${result.summary.total} başarılı.`,
+      `Batch run completed: ${result.summary.success_count}/${result.summary.total} succeeded.`,
       result.status === "error" ? "error" : "success",
     );
   } catch {
-    resultOutput.textContent = "Ağ veya istemci tarafı bir hata oluştu.";
-    setResultBadge("Bağlantı", "error");
-    setStatus("Sunucuya erişilemedi veya yanıt çözümlenemedi.", "error");
+    resultOutput.textContent = "A network or client-side error interrupted the request.";
+    setResultBadge("Offline", "error");
+    setStatus("The server could not be reached or the response could not be parsed.", "error");
   }
 }
 
 async function copyResult() {
   if (!copyBuffer) {
-    setStatus("Kopyalanabilir bir sonuç yok.", "error");
+    setStatus("There is no copyable result yet.", "error");
     return;
   }
   try {
     await navigator.clipboard.writeText(copyBuffer);
-    setStatus("Sonuç panoya kopyalandı.", "success");
+    setStatus("The result has been copied to the clipboard.", "success");
   } catch {
-    setStatus("Tarayıcı panoya yazma izni vermedi.", "error");
+    setStatus("The browser denied clipboard access.", "error");
   }
 }
 
 async function runSelfCheck() {
   selfCheckButton.disabled = true;
-  healthOutput.textContent = "Sistem kontrolü çalışıyor...";
-  healthStatusBadge.textContent = "Çalışıyor";
+  healthOutput.textContent = "System check is running...";
+  healthStatusBadge.textContent = "Running";
   applyBadgeTone(healthStatusBadge, "loading");
 
   try {
@@ -384,17 +384,17 @@ async function runSelfCheck() {
     const payload = await response.json();
     const tone = payload.status === "ok" ? "success" : "error";
 
-    healthStatusBadge.textContent = payload.status === "ok" ? "Sağlıklı" : "Sorun";
+    healthStatusBadge.textContent = payload.status === "ok" ? "Healthy" : "Issue";
     applyBadgeTone(healthStatusBadge, tone);
     healthCheckedCount.textContent = String(payload.checked_methods || 0);
     healthSuccessCount.textContent = String(payload.success_count || 0);
     healthErrorCount.textContent = String(payload.error_count || 0);
 
     const lines = [
-      `Durum: ${payload.status}`,
-      `Kontrol edilen: ${payload.checked_methods}`,
-      `Başarılı: ${payload.success_count}`,
-      `Hatalı: ${payload.error_count}`,
+      `Status: ${payload.status}`,
+      `Checked: ${payload.checked_methods}`,
+      `Passed: ${payload.success_count}`,
+      `Failed: ${payload.error_count}`,
       "",
       ...(payload.results || []).map((item) => {
         const detail = item.message || "";
@@ -403,9 +403,9 @@ async function runSelfCheck() {
     ];
     healthOutput.textContent = lines.join("\n");
   } catch {
-    healthStatusBadge.textContent = "Hata";
+    healthStatusBadge.textContent = "Error";
     applyBadgeTone(healthStatusBadge, "error");
-    healthOutput.textContent = "Sistem kontrolü endpoint'ine ulaşılamadı.";
+    healthOutput.textContent = "The system check endpoint could not be reached.";
   } finally {
     selfCheckButton.disabled = false;
   }

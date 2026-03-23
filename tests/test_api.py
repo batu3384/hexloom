@@ -11,10 +11,12 @@ async def test_index_page_renders():
         response = await client.get("/")
 
     assert response.status_code == 200
-    assert "Format Workbench" in response.text
-    assert "Metin → Format" in response.text
-    assert "Format → Metin" in response.text
+    assert "Hexloom" in response.text
+    assert "Text to Format" in response.text
+    assert "Format to Text" in response.text
     assert "/static/styles.css" in response.text
+    assert 'property="og:title" content="Hexloom"' in response.text
+    assert "/static/og-card.svg" in response.text
     assert "cdn.tailwindcss.com" not in response.text
 
 
@@ -47,12 +49,23 @@ async def test_health_endpoint_returns_ok_report():
 
 
 @pytest.mark.asyncio
-async def test_favicon_returns_204():
+async def test_favicon_returns_svg():
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://testserver") as client:
         response = await client.get("/favicon.ico")
 
-    assert response.status_code == 204
+    assert response.status_code == 200
+    assert "svg" in response.text
+
+
+@pytest.mark.asyncio
+async def test_social_card_is_served():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://testserver") as client:
+        response = await client.get("/static/og-card.svg")
+
+    assert response.status_code == 200
+    assert "Hexloom" in response.text
 
 
 @pytest.mark.asyncio

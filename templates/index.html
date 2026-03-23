@@ -1,189 +1,213 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Format Workbench</title>
+  <title>Hexloom</title>
+  <meta name="description" content="Hexloom is a professional workspace for encoding, decoding, validating, and inspecting text transformations." />
+  <meta name="theme-color" content="#0a0f15" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Hexloom" />
+  <meta property="og:description" content="Professional text transformation workspace for payloads, signals, and encoded formats." />
+  <meta property="og:url" content="{{ public_url }}" />
+  <meta property="og:image" content="{{ og_image_url }}" />
+  <meta property="og:image:type" content="image/svg+xml" />
+  <meta property="og:image:alt" content="Hexloom social preview card" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Hexloom" />
+  <meta name="twitter:description" content="Professional text transformation workspace for payloads, signals, and encoded formats." />
+  <meta name="twitter:image" content="{{ og_image_url }}" />
+  <link rel="canonical" href="{{ public_url }}" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg?v={{ asset_version }}">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/static/styles.css?v={{ asset_version }}">
 </head>
 <body>
   <main class="app-shell">
     <header class="topbar">
       <div class="brand-block">
-        <p class="eyebrow">Text Transformation Workspace</p>
-        <div class="brand-line">
-          <h1>Format Workbench</h1>
-          <span class="count-pill">{{ methods | length }} methods</span>
+        <p class="eyebrow">Transformation Workspace</p>
+        <div class="brand-row">
+          <img class="brand-mark" src="/static/favicon.svg?v={{ asset_version }}" alt="Hexloom logo">
+          <div class="brand-copy">
+            <h1>Hexloom</h1>
+            <p class="brand-subtitle">Woven transformations for text, payloads and signals.</p>
+          </div>
         </div>
-        <p class="topbar-copy">
-          Encode, decode and inspect structured text formats from one controlled workspace.
-        </p>
+        <p class="topbar-copy">A professional studio for converting, validating, and inspecting structured text formats.</p>
       </div>
 
       <div class="topbar-actions">
+        <span class="count-pill">{{ methods | length }} methods</span>
         <a class="secondary-button" href="/docs">API Docs</a>
         <button id="selfCheckButton" type="button" class="primary-button">System Check</button>
       </div>
     </header>
 
-    <section class="workbench">
-      <aside class="control-rail">
-        <div class="rail-section">
-          <p class="eyebrow">Configuration</p>
-          <label class="field-label" for="methodSearch">Method Search</label>
-          <input
-            id="methodSearch"
-            class="field-control"
-            type="search"
-            placeholder="base64, morse, payload"
-            autocomplete="off"
-          >
+    <section class="control-bar">
+      <div class="control-card control-card-search">
+        <label class="field-label" for="methodSearch">Search</label>
+        <input
+          id="methodSearch"
+          class="field-control"
+          type="search"
+          placeholder="base64, morse, payload"
+          autocomplete="off"
+        >
+      </div>
 
-          <label class="field-label field-spacer" for="methodSelect">Method</label>
-          <select id="methodSelect" class="field-control">
-            {% for method in methods %}
-            <option value="{{ method.key }}">{{ method.label }}</option>
-            {% endfor %}
-          </select>
+      <div class="control-card">
+        <label class="field-label" for="methodSelect">Method</label>
+        <select id="methodSelect" class="field-control">
+          {% for method in methods %}
+          <option value="{{ method.key }}">{{ method.label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="control-card">
+        <span class="field-label">Direction</span>
+        <div class="pill-group" id="directionGroup">
+          <button id="encodeFlowButton" type="button" class="pill-button is-active">Text to Format</button>
+          <button id="decodeFlowButton" type="button" class="pill-button">Format to Text</button>
+        </div>
+      </div>
+
+      <div class="control-card">
+        <span class="field-label">Mode</span>
+        <div class="pill-group" id="modeGroup">
+          <button id="singleModeButton" type="button" class="pill-button is-active is-neutral">Single</button>
+          <button id="bulkModeButton" type="button" class="pill-button is-neutral">Batch</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="context-strip">
+      <div class="context-intro">
+        <p class="eyebrow">Current Workflow</p>
+        <h2 id="flowHeadline"></h2>
+        <p id="flowDescription" class="context-copy"></p>
+      </div>
+
+      <div class="context-meta">
+        <div class="meta-chip">
+          <span class="meta-label">Key</span>
+          <strong id="methodKeyBadge" class="meta-value"></strong>
+        </div>
+        <div class="meta-chip">
+          <span class="meta-label">Category</span>
+          <strong id="methodCategoryBadge" class="meta-value"></strong>
+        </div>
+        <div class="meta-chip">
+          <span class="meta-label">Endpoint</span>
+          <strong id="endpointPreview" class="meta-value"></strong>
+        </div>
+        <div class="meta-chip">
+          <span class="meta-label">Input</span>
+          <strong id="inputTypePreview" class="meta-value"></strong>
+        </div>
+        <div class="meta-chip">
+          <span class="meta-label">Output</span>
+          <strong id="outputTypePreview" class="meta-value"></strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace-grid">
+      <section class="editor-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Source</p>
+            <h3 id="inputPanelTitle"></h3>
+          </div>
+          <button id="loadExampleButton" type="button" class="ghost-button">Load Sample</button>
         </div>
 
-        <div class="rail-section">
-          <p class="eyebrow">Direction</p>
-          <div class="pill-group" id="directionGroup">
-            <button id="encodeFlowButton" type="button" class="pill-button is-active">Metin → Format</button>
-            <button id="decodeFlowButton" type="button" class="pill-button">Format → Metin</button>
-          </div>
+        <p id="inputPanelHint" class="panel-copy"></p>
 
-          <label class="field-label field-spacer">Mode</label>
-          <div class="pill-group" id="modeGroup">
-            <button id="singleModeButton" type="button" class="pill-button is-active is-neutral">Tekil</button>
-            <button id="bulkModeButton" type="button" class="pill-button is-neutral">Toplu</button>
-          </div>
+        <div id="singleInputWrap" class="input-group">
+          <label id="singleInputLabel" class="field-label" for="singleInput"></label>
+          <textarea id="singleInput" class="text-panel" rows="18" spellcheck="false"></textarea>
         </div>
 
-        <div class="rail-section rail-summary">
-          <p class="eyebrow">Workflow</p>
-          <h2 id="flowHeadline" class="rail-headline"></h2>
-          <p id="flowDescription" class="rail-copy"></p>
-
-          <div class="meta-stack">
-            <div class="meta-row">
-              <span class="meta-label">Method Key</span>
-              <strong id="methodKeyBadge" class="meta-value"></strong>
-            </div>
-            <div class="meta-row">
-              <span class="meta-label">Category</span>
-              <strong id="methodCategoryBadge" class="meta-value"></strong>
-            </div>
-            <div class="meta-row">
-              <span class="meta-label">Endpoint</span>
-              <strong id="endpointPreview" class="meta-value"></strong>
-            </div>
-            <div class="meta-row">
-              <span class="meta-label">Input</span>
-              <strong id="inputTypePreview" class="meta-value"></strong>
-            </div>
-            <div class="meta-row">
-              <span class="meta-label">Output</span>
-              <strong id="outputTypePreview" class="meta-value"></strong>
-            </div>
-          </div>
+        <div id="bulkInputWrap" class="input-group is-hidden">
+          <label id="bulkInputLabel" class="field-label" for="bulkInput"></label>
+          <textarea id="bulkInput" class="text-panel" rows="18" spellcheck="false"></textarea>
         </div>
 
-        <div class="rail-section rail-method">
-          <p class="eyebrow">Method Detail</p>
-          <h2 id="detailTitle" class="method-title"></h2>
-          <p id="detailDescription" class="rail-copy"></p>
-
-          <div class="meta-stack compact-meta">
-            <div class="meta-row">
-              <span class="meta-label">Category</span>
-              <strong id="detailCategory" class="meta-value"></strong>
-            </div>
-            <div class="meta-row">
-              <span class="meta-label">Active Sample</span>
-              <strong id="detailExampleLabel" class="meta-value"></strong>
-            </div>
-          </div>
-
-          <div class="example-slab">
-            <span class="field-label">Sample Payload</span>
-            <pre id="detailExampleValue"></pre>
-          </div>
-        </div>
-      </aside>
-
-      <section class="stage">
-        <div class="editor-panel">
-          <div class="panel-header">
-            <div>
-              <p class="eyebrow">Source</p>
-              <h3 id="inputPanelTitle"></h3>
-            </div>
-            <button id="loadExampleButton" type="button" class="ghost-button">Örneği yükle</button>
-          </div>
-
-          <p id="inputPanelHint" class="panel-copy"></p>
-
-          <div id="singleInputWrap" class="input-group">
-            <label id="singleInputLabel" class="field-label" for="singleInput"></label>
-            <textarea id="singleInput" class="text-panel" rows="15" spellcheck="false"></textarea>
-          </div>
-
-          <div id="bulkInputWrap" class="input-group is-hidden">
-            <label id="bulkInputLabel" class="field-label" for="bulkInput"></label>
-            <textarea id="bulkInput" class="text-panel" rows="15" spellcheck="false"></textarea>
-          </div>
-
-          <div class="action-row">
-            <button id="runButton" type="button" class="primary-button">Dönüştür</button>
-            <button id="clearButton" type="button" class="secondary-button">Temizle</button>
-          </div>
-
-          <div id="statusMessage" class="status-box">
-            Yöntem, yön ve mod seçildiğinde çalışma alanı otomatik olarak güncellenir.
-          </div>
+        <div class="action-row">
+          <button id="runButton" type="button" class="primary-button">Run Transform</button>
+          <button id="clearButton" type="button" class="secondary-button">Clear</button>
         </div>
 
-        <div class="editor-panel editor-panel-output">
-          <div class="panel-header">
-            <div>
-              <p class="eyebrow">Result</p>
-              <h3 id="outputPanelTitle"></h3>
-            </div>
-            <span id="resultBadge" class="result-badge">Ready</span>
-          </div>
+        <div id="statusMessage" class="status-box">The workspace updates automatically when method, direction or mode changes.</div>
+      </section>
 
-          <p id="outputPanelHint" class="panel-copy"></p>
-
-          <div class="output-box">
-            <pre id="resultOutput">Henüz sonuç yok.</pre>
+      <section class="editor-panel editor-panel-output">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Result</p>
+            <h3 id="outputPanelTitle"></h3>
           </div>
+          <span id="resultBadge" class="result-badge">Ready</span>
+        </div>
 
-          <div class="action-row">
-            <button id="copyButton" type="button" class="secondary-button" disabled>Kopyala</button>
-            <button id="reuseButton" type="button" class="ghost-button" disabled>Sonucu girdiye taşı</button>
-          </div>
+        <p id="outputPanelHint" class="panel-copy"></p>
 
-          <div class="status-strip">
-            <span class="clipboard-hint">Clipboard Ready</span>
-            <span class="shortcut-hint">Cmd/Ctrl + Enter ile çalıştır</span>
-          </div>
+        <div class="output-box">
+          <pre id="resultOutput">No result yet.</pre>
+        </div>
+
+        <div class="action-row">
+          <button id="copyButton" type="button" class="secondary-button" disabled>Copy Result</button>
+          <button id="reuseButton" type="button" class="ghost-button" disabled>Reuse as Input</button>
+        </div>
+
+        <div class="status-strip">
+          <span class="clipboard-hint">Clipboard Ready</span>
+          <span class="shortcut-hint">Run with Cmd/Ctrl + Enter</span>
         </div>
       </section>
     </section>
 
     <section class="lower-grid">
+      <section class="method-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Method Profile</p>
+            <h2 id="detailTitle"></h2>
+          </div>
+        </div>
+
+        <p id="detailDescription" class="panel-copy"></p>
+
+        <div class="method-grid">
+          <div class="method-metric">
+            <span class="meta-label">Category</span>
+            <strong id="detailCategory" class="metric-value"></strong>
+          </div>
+          <div class="method-metric">
+            <span class="meta-label">Current Sample</span>
+            <strong id="detailExampleLabel" class="metric-value"></strong>
+          </div>
+        </div>
+
+        <div class="example-slab">
+          <span class="field-label">Sample Payload</span>
+          <pre id="detailExampleValue"></pre>
+        </div>
+      </section>
+
       <section class="diagnostic-panel">
-        <div class="diagnostic-header">
+        <div class="panel-header">
           <div>
             <p class="eyebrow">Diagnostics</p>
             <h2>System Reliability</h2>
           </div>
-          <span id="healthStatusBadge" class="result-badge">Bekliyor</span>
+          <span id="healthStatusBadge" class="result-badge">Idle</span>
         </div>
 
         <div class="health-summary-grid">
@@ -202,24 +226,13 @@
         </div>
 
         <div class="report-box">
-          <pre id="healthOutput">Henüz sistem kontrolü çalıştırılmadı.</pre>
+          <pre id="healthOutput">System check has not been executed yet.</pre>
         </div>
-      </section>
-
-      <section class="notes-panel">
-        <p class="eyebrow">Operating Notes</p>
-        <h2>Single Surface, Clear Decisions</h2>
-        <ul class="notes-list">
-          <li>Tekil mod bir kayıt için, toplu mod satır bazlı işlem için kullanılır.</li>
-          <li>Arama alanı, yöntem listesini anında filtreler ve aktif akışı korur.</li>
-          <li>Sonuç alanındaki veri tek tıkla kopyalanabilir veya yeniden girişe taşınabilir.</li>
-          <li>System Check tüm yöntemleri encode, decode ve batch düzeyinde doğrular.</li>
-        </ul>
       </section>
     </section>
   </main>
 
   <script id="methods-data" type="application/json">{{ methods | tojson }}</script>
-  <script src="/static/app.js"></script>
+  <script src="/static/app.js?v={{ asset_version }}"></script>
 </body>
 </html>
