@@ -4,6 +4,12 @@ Hexloom is a professional FastAPI workspace for encoding, decoding, validating, 
 
 It combines a polished web UI, JSON API endpoints, batch processing, health diagnostics, and production-ready deployment scaffolding for teams that work with payloads, signals, and encoded content.
 
+## Live links
+
+- Live app: [https://hexloom.onrender.com](https://hexloom.onrender.com)
+- API docs: [https://hexloom.onrender.com/docs](https://hexloom.onrender.com/docs)
+- Health check: [https://hexloom.onrender.com/health/transformations](https://hexloom.onrender.com/health/transformations)
+
 ![Hexloom overview](docs/assets/hexloom-overview.png)
 
 ## Why Hexloom
