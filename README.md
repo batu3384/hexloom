@@ -93,7 +93,7 @@ Error response:
 {
   "status": "error",
   "result": null,
-  "message": "Geçerli bir Base64 metni bekleniyordu.",
+  "message": "Expected a valid Base64 string.",
   "clipboard_ready": false
 }
 ```
